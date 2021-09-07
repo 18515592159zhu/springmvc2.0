@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>员工信息修改</title>
+</head>
+<body>
+<h1>员工信息修改</h1>
+<form th:action="@{/employee}" method="post">
+    <input type="hidden" name="_method" value="put">
+    <input type="hidden" name="id" th:value="${employee.id}">
+    用户名：<input type="text" name="lastName" th:value="${employee.lastName}"><br>
+    邮箱：<input type="text" name="email" th:value="${employee.email}"><br>
+    <!--
+        th:field="${employee.gender}"可用于单选框或复选框的回显
+        若单选框的value和employee.gender的值一致，则添加checked="checked"属性
+    -->
+    性别：<input type="radio" name="gender" value="1" th:field="${employee.gender}">男
+    <input type="radio" name="gender" value="0" th:field="${employee.gender}">女<br>
+    <input type="submit" value="修改员工信息"><br>
+</form>
+</body>
+</html>

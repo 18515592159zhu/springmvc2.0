@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns="http://xmlns.jcp.org/xml/ns/javaee"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/javaee http://xmlns.jcp.org/xml/ns/javaee/web-app_4_0.xsd"
+         version="4.0">
+    <!--
+        配置SpringMVC的前端控制器，对浏览器所发送的请求统一进行处理
+        在此配置下，SpringMVC的配置文件具有默认的位置和名称
+        默认的位置：WEB-INF
+        默认的名称：<servlet-name>-servlet.xml
+        若要为springMVC的配置文件设置自定义的位置和名称
+        需要在servlet标签中添加init-param
+        <init-param>
+            <param-name>contextConfigLocation</param-name>
+            <param-value>classpath:springMVC.xml</param-value>
+        </init-param>
+        load-on-startup：将前端控制器DispatcherServlet的初始化时间提前到服务器启动时
+    -->
+    <servlet>
+        <servlet-name>springMVC</servlet-name>
+        <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+        <!-- 通过初始化参数指定SpringMVC配置文件的位置和名称 -->
+        <init-param>
+            <!-- contextConfigLocation为固定值 -->
+            <param-name>contextConfigLocation</param-name>
+            <!-- 使用classpath:表示从类路径查找配置文件，例如maven工程中的src/main/resources -->
+            <param-value>classpath:springMVC.xml</param-value>
+        </init-param>
+        <!--
+            作为框架的核心组件，在启动过程中有大量的初始化操作要做
+            而这些操作放在第一次请求时才执行会严重影响访问速度
+            因此需要通过此标签将启动控制DispatcherServlet的初始化时间提前到服务器启动时
+        -->
+        <load-on-startup>1</load-on-startup>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>springMVC</servlet-name>
+        <!--
+            设置SpringMVC的核心控制器所能处理的请求的请求路径
+            /：所匹配的请求可以是/login或.js或.css方式的请求
+            但是/不能匹配.jsp请求路径的请求
+
+            如果将url-pattern设置为/之后，只要是在web.xml文件中找不到匹配的URL
+            它们的访问请求都将交给DispatcherServlet处理
+            静态资源：css文件,js文件,图片也会被拦截并交给DispatcherServlet处理
+            该配置方式不会拦截.jsp文件和.jspx文件
+            因为这个在tomcat中的conf目录里面的web.xml文件中已经添加的相应的处理方式了
+            他会交给org.apache.jasper.servlet.JspServlet来处理
+            即我们可以正常访问系统中的jsp文件。
+        -->
+        <url-pattern>/</url-pattern>
+    </servlet-mapping>
+</web-app>
